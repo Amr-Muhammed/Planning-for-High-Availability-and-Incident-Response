@@ -14,7 +14,7 @@ resource "aws_vpc" "this" {
    count = length(var.azs) > 0 ? length(var.azs) : 0
 
    vpc_id            = aws_vpc.this.id
-   cidr_block        = cidrsubnet(aws_vpc.this.cidr_block, 8, 1 + count.index)
+   cidr_block = cidrsubnet(aws_vpc.example.cidr_block, 4, var.az_number[data.aws_availability_zone.example.name_suffix])
    availability_zone = element(var.azs, count.index)
 
    tags = merge(
@@ -34,8 +34,8 @@ resource "aws_vpc" "this" {
    count = length(var.azs) > 0 ? length(var.azs) : 0
 
    vpc_id                  = aws_vpc.this.id
-   cidr_block              = cidrsubnet(aws_vpc.this.cidr_block, 8, 10 + count.index)
-   availability_zone       = element(var.azs, count.index)
+   cidr_block = cidrsubnet(aws_vpc.example.cidr_block, 4, var.az_number[data.aws_availability_zone.example.name_suffix])
+   
    map_public_ip_on_launch = true
 
    tags = merge(
